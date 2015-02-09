@@ -1,0 +1,5 @@
+Deploy adama distributed system using serfnode-deployer:
+
+    <fix hosts>
+    serfnode-deployer play.yml
+
