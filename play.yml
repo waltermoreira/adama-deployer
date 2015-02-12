@@ -1,0 +1,54 @@
+---
+
+- hosts: all
+  roles:
+
+    # host serfnode
+    - role: serfnode
+      image_name: adama/serfnode
+      my_role: serfnode
+      serfnode_name: node_serfnode
+      exposed_ports:
+        - 7946
+      mapped_ports:
+        - "7946:7946"
+      when: node_serfnode
+
+    # Redis
+    - role: serfnode
+      image_name: adama/redis
+      my_role: redis
+      serfnode_name: node_redis
+      peer: 172.17.42.1:7946
+      exposed_ports:
+        - 6379
+      mapped_ports:
+        - "6379:6379"
+      app_volumes:
+        - /tmp/my_data:/data
+      when: node_redis
+
+    # Rabbitmq
+    - role: serfnode
+      image_name: adama/rabbitmq
+      my_role: rabbitmq
+      serfnode_name: node_rabbitmq
+      peer: 172.17.42.1:7946
+      exposed_ports:
+        - 5672
+        - 15672
+      mapped_ports:
+        - "5672:5672"
+        - "15672:15672"
+      when: node_rabbitmq
+
+    # Minion
+    - role: serfnode
+      image_name: adama/minion
+      my_role: minion
+      serfnode_name: node_minion
+      peer: 172.17.42.1:7946
+      exposed_ports:
+        - 1234
+      privileged: true
+      when: node_minion

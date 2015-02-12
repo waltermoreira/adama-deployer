@@ -1,0 +1,8 @@
+---
+
+# which components to deploy?
+node_serfnode: yes
+node_redis: yes
+node_rabbitmq: yes
+node_minion: yes
+
