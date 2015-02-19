@@ -20,9 +20,7 @@
       my_role: redis
       serfnode_name: node_redis
       peer: 172.17.42.1:7946
-      exposed_ports:
-        - 6379
-      mapped_ports:
+      app_ports:
         - "6379:6379"
       app_volumes:
         - /tmp/my_data:/data
@@ -50,5 +48,19 @@
       peer: 172.17.42.1:7946
       exposed_ports:
         - 1234
+      mapped_ports:
+        - "1234:1234"
       privileged: true
       when: node_minion
+
+    # App
+    - role: serfnode
+      image_name: adama/app
+      my_role: app
+      serfnode_name: node_app
+      peer: 172.17.42.1:7946
+      exposed_ports:
+        - 8080
+      mapped_ports:
+        - "8080:8080"
+      when: node_app
